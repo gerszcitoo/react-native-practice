@@ -10,7 +10,7 @@ import categories from "../data/categories.json";
 import FlatCard from "../components/FlatCard";
 import { useState, useEffect } from "react";
 
-const CategoriesScreen = ({ setCategory }) => {
+const CategoriesScreen = ({ navigation }) => {
   const { width, height } = useWindowDimensions();
 
   const [isPortrait, setIsPortrait] = useState(true);
@@ -24,7 +24,7 @@ const CategoriesScreen = ({ setCategory }) => {
 
   const renderCategoryItem = ({ item, index }) => {
     return (
-      <Pressable onPress={() => setCategory(item.title)}>
+      <Pressable onPress={() => navigation.navigate("Productos", item.title)}>
         <FlatCard
           style={
             //operador ternario. condicion?verdadero:falso

@@ -1,22 +1,21 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { CategoriesScreen, ProductsScreen, ProductScreen } from "../screens";
+import Header from "../components/Header";
 
 const Stack = createNativeStackNavigator();
 
 const Navigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="Categorías"
-          component={CategoriesScreen}
-        ></Stack.Screen>
-        <Stack.Screen
-          name="Productos"
-          component={ProductsScreen}
-        ></Stack.Screen>
-        <Stack.Screen name="Producto" component={ProductScreen}></Stack.Screen>
+      <Stack.Navigator
+        screenOptions={{
+          header: ({ route }) => <Header subtitle={route.name} />,
+        }}
+      >
+        <Stack.Screen name="Categorías" component={CategoriesScreen} />
+        <Stack.Screen name="Productos" component={ProductsScreen} />
+        <Stack.Screen name="Producto" component={ProductScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

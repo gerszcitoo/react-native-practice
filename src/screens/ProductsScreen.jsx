@@ -14,9 +14,11 @@ import MontserratText from "../components/MontserratText";
 import FlatCard from "../components/FlatCard";
 import Search from "../components/Search";
 
-const ProductsScreen = ({ category, setCategory, setProductId }) => {
+const ProductsScreen = ({ navigation, route }) => {
   const [productsFiltered, setProductsFiltered] = useState([]);
   const [search, setSearch] = useState("");
+
+  const category = route.params;
 
   useEffect(() => {
     const productsTempFiltered = products.filter(
@@ -29,12 +31,11 @@ const ProductsScreen = ({ category, setCategory, setProductId }) => {
       );
       setProductsFiltered(productsTempSearched);
     }
-    console.log(productsFiltered);
   }, [category, search]);
 
   const renderProductItem = ({ item }) => {
     return (
-      <Pressable onPress={() => setProductId(item.id)}>
+      <Pressable onPress={() => navigation.navigate("Producto", item.id)}>
         <FlatCard style={styles.productContainer}>
           <View>
             <Image
@@ -64,6 +65,9 @@ const ProductsScreen = ({ category, setCategory, setProductId }) => {
                 Descuento {item.discount} %
               </Text>
             )}
+            {item.stock <= 0 && (
+              <Text style={styles.noStockText}>Sin Stock</Text>
+            )}
             <MontserratText style={styles.productPrice}>
               Precio: $ {item.price}
             </MontserratText>
@@ -74,7 +78,7 @@ const ProductsScreen = ({ category, setCategory, setProductId }) => {
   };
   return (
     <>
-      <Pressable onPress={() => setCategory("")}>
+      <Pressable onPress={() => navigation.goBack()}>
         <Icon name="arrow-back-ios" size={24} style={styles.goBack} />
       </Pressable>
       <Search setSearch={setSearch} />
@@ -148,5 +152,9 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     fontSize: 18,
     textAlign: "center",
+  },
+  noStockText: {
+    fontSize: 18,
+    color: colors.rojo,
   },
 });

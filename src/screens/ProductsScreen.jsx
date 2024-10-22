@@ -13,25 +13,26 @@ import products from "../data/products.json";
 import MontserratText from "../components/MontserratText";
 import FlatCard from "../components/FlatCard";
 import Search from "../components/Search";
+import { useSelector } from "react-redux";
 
 const ProductsScreen = ({ navigation, route }) => {
   const [productsFiltered, setProductsFiltered] = useState([]);
   const [search, setSearch] = useState("");
 
-  const category = route.params;
+  const productsFilteredByCategory = useSelector(
+    (state) => state.shopReducer.value.productsFilteredByCategory
+  );
 
   useEffect(() => {
-    const productsTempFiltered = products.filter(
-      (product) => product.category.toLowerCase() === category.toLowerCase()
-    );
-    setProductsFiltered(productsTempFiltered);
+    setProductsFiltered(productsFilteredByCategory);
     if (search) {
-      const productsTempSearched = productsTempFiltered.filter((product) =>
-        product.title.toLowerCase().includes(search.toLowerCase())
+      setProductsFiltered(
+        productsFilteredByCategory.filter((product) =>
+          product.title.toLowerCase().includes(search.toLowerCase())
+        )
       );
-      setProductsFiltered(productsTempSearched);
     }
-  }, [category, search]);
+  }, [search]);
 
   const renderProductItem = ({ item }) => {
     return (

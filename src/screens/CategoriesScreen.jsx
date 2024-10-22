@@ -6,14 +6,20 @@ import {
   Pressable,
   useWindowDimensions,
 } from "react-native";
-import categories from "../data/categories.json";
+//import categories from "../data/categories.json";
 import FlatCard from "../components/FlatCard";
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { setCategory } from "../features/shop/shopSlice";
 
 const CategoriesScreen = ({ navigation }) => {
   const { width, height } = useWindowDimensions();
 
   const [isPortrait, setIsPortrait] = useState(true);
+
+  const categories = useSelector((state) => state.shopReducer.value.categories);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (width > height) {
       setIsPortrait(false);
@@ -24,7 +30,12 @@ const CategoriesScreen = ({ navigation }) => {
 
   const renderCategoryItem = ({ item, index }) => {
     return (
-      <Pressable onPress={() => navigation.navigate("Productos", item.title)}>
+      <Pressable
+        onPress={() => {
+          dispatch(setCategory(item.title));
+          navigation.navigate("Productos");
+        }}
+      >
         <FlatCard
           style={
             //operador ternario. condicion?verdadero:falso
